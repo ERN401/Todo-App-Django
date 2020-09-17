@@ -1,0 +1,17 @@
+<h3>Edit task</h3>
+<hr />
+{{ task }}
+<br /><br />
+<form action="{% url 'update' task.id %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="id" />
+    <input type="text" name="title" value="{{ task }}"/>
+
+    {% if  task.completed %}
+        <input type="checkbox" name="check" checked />
+    {% else %}
+        <input type="checkbox" name="check" />
+    {% endif %}
+    
+    <input type="submit" value="Update" />
+</form>

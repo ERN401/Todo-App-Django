@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Todo App</title>
+    <style>
+        a {
+            text-decoration: none;            
+            color: darkblue;
+        }
+        a:hover {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>ToDo List</h2>
+
+    <form action="{% url 'add' %}" method="POST" style="display: inline;">
+        {% csrf_token %}
+        <label>task: </label>
+        <input type="text" name="title" />
+        <input type="submit" value="Add" />
+    </form>
+
+    <form action="{% url 'deleteAll' %}" method="post" style="display: inline;">
+        {% csrf_token %}
+        <input type="submit" value="Delete All" />
+    </form>
+    
+    <hr />
+    <div>
+        {% for task in tasks %}
+        <div>
+            {% if task.completed %}
+                <span><del>{{ task.title }}</del></span>
+            {% else %}
+                <span>{{ task.title }}</span>
+            {% endif %}
+
+            <form method="POST" action="{% url 'delete' %}" style="display: inline;">
+                {% csrf_token %}
+                <input type="hidden" name='id' value="{{ task.id }}" /> | 
+                <input type="submit" value="Delete"/>
+            </form>
+
+            <form action="" method="POST" style="display: inline;">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ task.id }}" />                
+            </form>
+            <a href="{% url 'update_page' task.id %}"> | Update</a>
+            <hr />
+        </div>
+        {% endfor %}
+    </div>
+</body>
+
+</html>
